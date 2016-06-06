@@ -858,10 +858,17 @@ class BpXProfileWordPressUserSync {
 		// cannot be deleted
 		$can_delete = 0;
 
+		
 		// construct data to save
 		$data = compact(
 			array( 'field_group_id', 'parent_id', 'type', 'name', 'description', 'is_required', 'can_delete' )
 		);
+		
+		// when a field with this name already exists, then use that field
+		$field_id = xprofile_get_field_id_from_name($name);
+		if ($field_id) {
+			$data['field_id'] = $field_id;
+		}
 
 		// use bp function to get new field ID
 		$field_id = xprofile_insert_field( $data );
